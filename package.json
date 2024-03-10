@@ -1,6 +1,6 @@
 {
   "name": "sdenv",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "",
   "main": "main.js",
   "directories": {
@@ -27,6 +27,7 @@
     "sdenv-jsdom": "^1.1.0"
   },
   "devDependencies": {
+    "@release-it/conventional-changelog": "^8.0.1",
     "release-it": "^17.0.1"
   },
   "gypfile": true,
