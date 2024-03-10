@@ -1,0 +1,51 @@
+{
+  "name": "sdenv",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest ./test/",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand ./test/",
+    "build": "node-gyp rebuild && cp build/Release/*.node ./bin/",
+    "release": "release-it"
+  },
+  "logLevel": "debug",
+  "author": "pysunday",
+  "license": "ISC",
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "canvas": "^2.11.2",
+    "jest": "^29.7.0",
+    "lodash": "^4.17.21",
+    "log4js": "^6.9.1",
+    "module-alias": "^2.2.3",
+    "node-addon-api": "^7.0.0",
+    "sdenv-extend": "^1.1.0",
+    "sdenv-jsdom": "^1.1.0"
+  },
+  "devDependencies": {
+    "release-it": "^17.0.1"
+  },
+  "gypfile": true,
+  "jest": {
+    "moduleNameMapper": {
+      "@/(.*)": "<rootDir>/$1",
+      "@utils/(.*)": "<rootDir>/utils/$1",
+      "@handler/(.*)": "<rootDir>/handler/$1",
+      "@bin/(.*)": "<rootDir>/bin/$1"
+    }
+  },
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "_moduleAliases": {
+    "@": ".",
+    "@handler": "./handler",
+    "@utils": "./utils",
+    "@bin": "./bin",
+    "@jsdom": "sdenv-jsdom/lib/jsdom/"
+  }
+}

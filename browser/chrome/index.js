@@ -1,0 +1,12 @@
+require('./window');
+require('./document');
+require('./navigation');
+require('./navigator');
+require('./chrome');
+require('./visualViewport');
+require('./styleMedia');
+// require('./webkitRequestFileSystem');
+require('./ctorRegistry');
+require('./location');
+require('./indexedDB');
+require('./RTCPeerConnection');
