@@ -1,6 +1,7 @@
 .DS_Store
 node_modules/
 output/
+!example/use-local/output/
 npm-debug.log
 yarn-error.log
 .idea
@@ -10,3 +11,4 @@ yarn.lock
 .history
 *.swp
 build/
+*.node

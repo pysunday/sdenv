@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img width="100" height="100" src="logo.svg" alt=""><br>
+    <img width="100" height="100" src="logo.png" alt=""><br>
     sdenv
 </h1>
 
@@ -10,22 +10,38 @@ sdenv是一个javascript运行时补环境框架，与github上其它补环境�
 
 ## 依赖
 
-作者开发时使用的是`v20.10.0`版本node，预期最低要求是18版本，由于未做其它版本可用性测试，因此建议使用sdenv的node版本大于等于`v20.10.0`
+作者开发时使用的是`v20.10.0`版本node，预期最低要求是18版本，由于未做其它版本可用性测试，因此建议使用sdenv的node版本大于等于`v20.10.0`。
 
-## 安装
-
-由于`document.all`需要由c代码动态生成，而固定编译环境下的编译产物只能在相同编译环境下运行，因此安装sdenv后需要动态编译生成node文件
-
-1. 安装：`npm i sdenv`
-2. 编译c代码：`cd node_modules/sdenv && yarn build`
-
-**在编译过程未实现自动化之前可直接clone项目使用**
+编译node插件用的是[node-gyp](https://github.com/nodejs/node-gyp)工具，该工具需要有python环境和c环境(如windows系统需安装Visual Studio)，请根据工具文档进行系统环境搭建。
 
 ## 使用
 
+### 源码方式
+
+1. clone项目：`git clone https://github.com/pysunday/sdenv.git`
+2. 安装依赖：`cd sdenv && npm i`
+3. 执行编译，unix运行：`npm run build`，windows运行：`npm run build:win`
+4. 运行样例：
+    * [运行本地代码](https://github.com/pysunday/sdenv/blob/main/example/use-local/README.md)：`node example/use-local/index.js`
+    * [运行网站代码](https://github.com/pysunday/sdenv/blob/main/example/use-remote/README.md)：`node example/use-remote/index.js`
+
+![样例调用](./static/example.png)
+
+### npm包方式
+
+1. 安装npm包：`npm i sdenv`
+2. 进入文件夹`node-modules/sdenv`执行编译，unix运行：`npm run build`，windows运行：`npm run build:win`
+3. 导入包方法：
+```javascript
+const browser = require('sdenv/browser/');
+const { jsdomFromText, jsdomFromUrl } = require('sdenv/utils/jsdom');
+```
+
+### 样例代码
+
 因为项目核心功能基于jsdom，且jsdom对dom的实现非常完善，因此使用sdenv之前建议有一定html与javascript语言开发基础，然后参考example目录下的样例文件:
 
-1. [use-local](https://github.com/pysunday/sdenv/example/use-local/README.md)
+1. 运行本地代码：[use-local](https://github.com/pysunday/sdenv/example/use-local/README.md)
     ```javascript
     const fs = require('fs');
     const path = require('path');
@@ -75,7 +91,7 @@ sdenv是一个javascript运行时补环境框架，与github上其它补环境�
 
     loadPages()
     ```
-2. [use-remote](https://github.com/pysunday/sdenv/example/use-remote/README.md)
+2. 运行网站代码：[use-remote](https://github.com/pysunday/sdenv/example/use-remote/README.md)
     ```javascript
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     const logger = require('../../utils/logger');
