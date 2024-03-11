@@ -1,12 +1,12 @@
 require('module-alias/register');
-const sdenvExtend = require('sdenv-extend');
+const SdenvExtend = require('sdenv-extend');
 
 module.exports = (win, type = 'chrome') => {
-  new sdenvExtend({
+  new SdenvExtend({
     memory: {
-      sdenvExtend,
+      SdenvExtend,
     }
   }, win);
   require(`@/browser/${type}`);
-  return new sdenvExtend();
+  return new SdenvExtend();
 }
