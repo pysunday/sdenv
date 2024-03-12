@@ -123,7 +123,7 @@ const { jsdomFromText, jsdomFromUrl } = require('sdenv/utils/jsdom');
 
 sdenv-extend初始化只执行一次，初始化成功后生成的环境对象可以使用`Object.sdenv()`(vm中使用非node)获取。
 
-sdenv-extend具体功能可参考项目内README文档。
+sdenv-extend具体功能可参考项目内[README文档](https://github.com/pysunday/sdenv-extend/blob/main/README.md)。
 
 ## 声明
 

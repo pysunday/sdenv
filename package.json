@@ -1,6 +1,6 @@
 {
   "name": "sdenv",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "main.js",
   "directories": {
@@ -24,7 +24,7 @@
     "log4js": "^6.9.1",
     "module-alias": "^2.2.3",
     "node-addon-api": "^7.0.0",
-    "sdenv-extend": "^1.1.0",
+    "sdenv-extend": "^1.2.0",
     "sdenv-jsdom": "^1.1.0"
   },
   "devDependencies": {

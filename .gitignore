@@ -12,3 +12,4 @@ yarn.lock
 *.swp
 build/
 *.node
+*/**/*-7802
