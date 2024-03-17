@@ -10,3 +10,4 @@ require('./ctorRegistry');
 require('./location');
 require('./indexedDB');
 require('./RTCPeerConnection');
+require('./document-element');

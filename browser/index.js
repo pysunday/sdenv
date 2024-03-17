@@ -1,4 +1,6 @@
 require('module-alias/register');
+// const jsdomDevtoolsFormatter = require('jsdom-devtools-formatter');
+// jsdomDevtoolsFormatter.install();
 const SdenvExtend = require('sdenv-extend');
 
 module.exports = (win, type = 'chrome') => {
