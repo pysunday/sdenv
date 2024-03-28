@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const appDirectory = (() => {
   // 返回项目根目录
-  const plist = fs.realpathSync(process.cwd()).split('/');
+  const plist = fs.realpathSync(__dirname).split('/');
   while (!fs.existsSync(path.resolve(plist.join('/'), 'package.json'))) {
     plist.pop();
     if (plist.length === 0) return false;
@@ -17,7 +17,7 @@ module.exports = {
   homePath: __dirname,
   modulePath: resolveApp('node_modules'),
   binPath: resolveApp('node_modules/.bin/'),
-  package: path.resolve('package.json'),
+  package: resolveApp('package.json'),
   resolve: resolveApp,
   handlerPath: resolveApp('handler'),
   configPath: resolveApp('config'),
