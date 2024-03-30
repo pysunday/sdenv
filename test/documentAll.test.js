@@ -1,4 +1,4 @@
-const getDocumentAll = require('../bin/documentAll.node').getDocumentAll;
+const getDocumentAll = require('../build/Release/documentAll.node').getDocumentAll;
 
 describe('模拟document.all检测', () => {
   const da = getDocumentAll({ length: 1 });

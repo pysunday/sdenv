@@ -1,12 +1,16 @@
 <h1 align="center">
-    <img width="100" height="100" src="logo.png" alt=""><br>
+    <img width="100" height="100" src="https://github.com/pysunday/sdenv/blob/main/logo.png" alt=""><br>
     sdenv
 </h1>
+
+[![NPM version](https://badge.fury.io/js/sdenv.svg)](http://badge.fury.io/js/sdenv)
+
 
 sdenv是一个javascript运行时补环境框架，与github上其它补环境框架存在较大区别，sdenv是站在巨人的肩膀上实现的，依赖于jsdom的强大dom仿真能力，sdenv可以真实模拟浏览器执行环境，作者在固定随机数与添加[sdenv-extend](https://github.com/pysunday/sdenv-extend)的部分插件后可以达到**瑞数vmp代码在sdenv运行生成的cookie值与浏览器生成的cookie值一致**。
 
 * sdenv专用jsdom版本：[sdenv-jsdom](https://github.com/pysunday/sdenv-jsdom)
 * sdenv多端环境提取：[sdenv-extend](https://github.com/pysunday/sdenv-extend)
+* 对瑞数算法逆向可参考项目：[rs-reverse](https://github.com/pysunday/rs-reverse)
 
 ## 依赖
 
@@ -14,24 +18,29 @@ sdenv是一个javascript运行时补环境框架，与github上其它补环境�
 
 编译node插件用的是[node-gyp](https://github.com/nodejs/node-gyp)工具，该工具需要有python环境和c环境(如windows系统需安装Visual Studio)，请根据工具文档进行系统环境搭建。
 
+## 可能出现的问题
+
+1. node-gyp报错：请确保操作系统有c++编译环境与python环境；
+2. 安装缓慢及canvas报错：由于canvas安装会优先从github获取现成的包，因此请在安装前先设置代理或者其它国内源，如果安装仍然失败请使用npm官方源+代理方式重新尝试；
+
+有其它问题请提issues！
+
 ## 使用
 
 ### 源码方式
 
 1. clone项目：`git clone https://github.com/pysunday/sdenv.git`
 2. 安装依赖：`cd sdenv && npm i`
-3. 执行编译，unix运行：`npm run build`，windows运行：`npm run build:win`
-4. 运行样例：
+3. 运行样例：
     * [运行本地代码](https://github.com/pysunday/sdenv/blob/main/example/use-local/README.md)：`node example/use-local/index.js`
     * [运行网站代码](https://github.com/pysunday/sdenv/blob/main/example/use-remote/README.md)：`node example/use-remote/index.js`
 
-![样例调用](./static/example.png)
+![样例调用](https://github.com/pysunday/sdenv/blob/main/static/example.png)
 
 ### npm包方式
 
 1. 安装npm包：`npm i sdenv`
-2. 进入文件夹`node-modules/sdenv`执行编译，unix运行：`npm run build`，windows运行：`npm run build:win`
-3. 导入包方法：
+2. 导入包方法：
 ```javascript
 const browser = require('sdenv/browser/');
 const { jsdomFromText, jsdomFromUrl } = require('sdenv/utils/jsdom');
@@ -124,6 +133,7 @@ const { jsdomFromText, jsdomFromUrl } = require('sdenv/utils/jsdom');
 sdenv-extend初始化只执行一次，初始化成功后生成的环境对象可以使用`Object.sdenv()`(vm中使用非node)获取。
 
 sdenv-extend具体功能可参考项目内[README文档](https://github.com/pysunday/sdenv-extend/blob/main/README.md)。
+
 
 ## 声明
 
