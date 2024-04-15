@@ -17,7 +17,7 @@ async function loadPages() {
     if (cookies) {
       logger.debug('cookieJar：', cookies);
     }
-    process.exit();
+    dom.window.close();
   }
 }
 loadPages()

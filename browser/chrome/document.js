@@ -1,5 +1,6 @@
 const getDocumentAll = require('@/build/Release/documentAll').getDocumentAll;
-const sdenv = require('sdenv-extend').sdenv();
-const window = sdenv.memory.sdWindow;
+module.exports = (sdenv) => {
+  const window = sdenv.memory.sdWindow;
 
-window.document.all = getDocumentAll({ length: 3 });
+  window.document.all = getDocumentAll({ length: 3 });
+}

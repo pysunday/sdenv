@@ -1,10 +1,11 @@
-const sdenv = require('sdenv-extend').sdenv();
-const window = sdenv.memory.sdWindow;
+module.exports = (sdenv) => {
+  const window = sdenv.memory.sdWindow;
 
-Object.defineProperty(window.location, 'replace', {
-  ...Object.getOwnPropertyDescriptor(window.location, 'replace'),
-  writable: false,
-  value: function(url) {
-    sdenv.tools.exit({ url });
-  }
-});
+  Object.defineProperty(window.location, 'replace', {
+    ...Object.getOwnPropertyDescriptor(window.location, 'replace'),
+    writable: false,
+    value: function(url) {
+      sdenv.tools.exit({ url });
+    }
+  });
+}

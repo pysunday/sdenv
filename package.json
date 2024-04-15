@@ -2,7 +2,6 @@
   "name": "sdenv",
   "version": "0.1.8",
   "description": "补环境框架",
-  "main": "main.js",
   "directories": {
     "test": "test"
   },
@@ -13,6 +12,12 @@
     "release": "release-it"
   },
   "logLevel": "debug",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pysunday/sdenv"
+  },
+  "homepage": "https://github.com/pysunday/sdenv#readme",
+  "bugs": "https://github.com/pysunday/sdenv/issues",
   "author": "pysunday",
   "license": "ISC",
   "dependencies": {
@@ -23,7 +28,7 @@
     "log4js": "^6.9.1",
     "module-alias": "^2.2.3",
     "node-addon-api": "^7.0.0",
-    "sdenv-extend": "^1.2.0",
+    "sdenv-extend": "^1.3.0",
     "sdenv-jsdom": "^1.1.0"
   },
   "devDependencies": {

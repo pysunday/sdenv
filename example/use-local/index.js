@@ -25,7 +25,7 @@ function initBrowser(window, cookieJar) {
   window.onbeforeunload = async (url) => {
     const cookies = cookieJar.getCookieStringSync(baseUrl);
     logger.debug('生成cookie：', cookies);
-    process.exit();
+    window.close();
   }
   browser(window, 'chrome');
 }

@@ -2,7 +2,7 @@ const jsdom = require('sdenv-jsdom');
 const logger = require('./logger');
 const { JSDOM, CookieJar } = jsdom;
 
-exports.jsdomFromUrl = (config, ua) => {
+exports.jsdomFromUrl = (config, cookieJar) => {
   const resourceLoader = new jsdom.ResourceLoader({
     strictSSL: false,
     ...config,
@@ -13,7 +13,7 @@ exports.jsdomFromUrl = (config, ua) => {
     warn: logger.warn.bind(logger),
     error: logger.error.bind(logger),
   });
-  const cookieJar = new CookieJar()
+  if (!cookieJar) cookieJar = new CookieJar();
   const options = {
     pretendToBeVisual: true,
     runScripts: "dangerously",
