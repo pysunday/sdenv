@@ -1,6 +1,6 @@
 {
   "name": "sdenv",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "补环境框架",
   "directories": {
     "test": "test"
