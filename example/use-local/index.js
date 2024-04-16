@@ -2,8 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { Script } = require("vm");
 const logger = require('../../utils/logger');
-const browser = require('../../browser/');
-const { jsdomFromText } = require('../../utils/jsdom');
+const { jsdomFromText, browser } = require('../../');
 
 const baseUrl = "https://wcjs.sbj.cnipa.gov.cn"
 

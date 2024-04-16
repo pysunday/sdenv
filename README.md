@@ -16,145 +16,125 @@ sdenv是一个javascript运行时补环境框架，与github上其它补环境�
 
 作者开发时使用的是`v20.10.0`版本node，预期最低要求是18版本，由于未做其它版本可用性测试，因此建议使用sdenv的node版本大于等于`v20.10.0`。
 
-编译node插件用的是[node-gyp](https://github.com/nodejs/node-gyp)工具，该工具需要有python环境和c环境(如windows系统需安装Visual Studio)，请根据工具文档进行系统环境搭建。
+编译node插件用的是[node-gyp](https://github.com/nodejs/node-gyp)工具，该工具需要有python环境和c环境(如windows系统需安装Visual Studio，Mac系统需要安装XCode)，请根据[工具文档](https://github.com/nodejs/node-gyp)进行系统环境搭建。
+
+**需要注意windows中安装Visual Studio时需要勾选`使用C++的桌面开发`选项**
+
+![安装Visual Studio注意](https://github.com/pysunday/sdenv/blob/main/static/vs-tip.png)
 
 ## 可能出现的问题
 
-1. node-gyp报错：请确保操作系统有c++编译环境与python环境；
+1. npm安装node-gyp报错：请确保操作系统有c++编译环境与python环境，报错示例（感谢用户风流小混沌提供图片素材）:
+![npm安装报错](https://github.com/pysunday/sdenv/blob/main/static/install-error.jpeg)
 2. 安装缓慢及canvas报错：由于canvas安装会优先从github获取现成的包，因此请在安装前先设置代理或者其它国内源，如果安装仍然失败请使用npm官方源+代理方式重新尝试；
+
+**解决完报错后记得重新执行下依赖安装！**
 
 有其它问题请提issues！
 
 ## 使用
 
-### 源码方式
+### npm包使用
 
-1. clone项目：`git clone https://github.com/pysunday/sdenv.git`
-2. 安装依赖：`cd sdenv && npm i`
-3. 运行样例：
-    * [运行本地代码](https://github.com/pysunday/sdenv/blob/main/example/use-local/README.md)：`node example/use-local/index.js`
-    * [运行网站代码](https://github.com/pysunday/sdenv/blob/main/example/use-remote/README.md)：`node example/use-remote/index.js`
-
-![样例调用](https://github.com/pysunday/sdenv/blob/main/static/example.png)
-
-### npm包方式
-
-1. 安装npm包：`npm i sdenv`
-2. 导入包方法：
+1. 创建自己的项目
+2. 项目中安装sdenv：`npm i sdenv`（请确保安装没有报错）
+3. 在项目中导入api并使用（可以参考example目录下的用例）：
 ```javascript
-const browser = require('sdenv/browser/');
-const { jsdomFromText, jsdomFromUrl } = require('sdenv/utils/jsdom');
+const { jsdomFromText, jsdomFromUrl, browser } = require('sdenv');
 ```
 
-### 样例代码
+### 样例代码运行
 
-因为项目核心功能基于jsdom，且jsdom对dom的实现非常完善，因此使用sdenv之前建议有一定html与javascript语言开发基础，然后参考example目录下的样例文件:
+clone项目仓库后执行依赖安装`npm i`，确保依赖安装成功后即可运行example目录下的样例文件了。
 
-1. 运行本地代码：[use-local](https://github.com/pysunday/sdenv/example/use-local/README.md)
-    ```javascript
-    const fs = require('fs');
-    const path = require('path');
-    const { Script } = require("vm");
-    const logger = require('../../utils/logger');
-    const browser = require('../../browser/');
-    const { jsdomFromText } = require('../../utils/jsdom');
+注意：样例代码仅供参考，作者建议使用npm包方式使用sdenv框架!
 
-    const baseUrl = "https://wcjs.sbj.cnipa.gov.cn"
+1. 运行本地代码：[use-local](./example/use-local/README.md)
+    ![样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-local.png)
+2. 运行网站代码：[use-remote](./example/use-remote/README.md)
+    ![样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-remote.png)
 
-    const files = {
-      html: path.resolve(__dirname, 'output/makecode_input_html.html'),
-      js: path.resolve(__dirname, 'output/makecode_input_js.js'),
-      ts: path.resolve(__dirname, 'output/makecode_input_ts.json'),
-    }
+## API
 
-    function getFile(name) {
-      const filepath = files[name];
-      if (!filepath) throw new Error(`getFile: ${name}错误`);
-      if (!fs.existsSync(filepath)) throw new Error(`文件${filepath}不存在，请使用rs-reverse工具先获取文件`);
-      return fs.readFileSync(filepath);
-    }
+sdenv设计极其简单，它的核心API只有一个，即browser！
 
-    function initBrowser(window, cookieJar) {
-      window.$_ts = JSON.parse(getFile('ts'));
-      window.onbeforeunload = async (url) => {
-        const cookies = cookieJar.getCookieStringSync(baseUrl);
-        logger.debug('生成cookie：', cookies);
-        process.exit();
-      }
-      browser(window, 'chrome');
-    }
+### browser(window: object, type: string)
 
-    async function loadPages() {
-      const htmltext = getFile('html');
-      const jstext = getFile('js');
-      const [jsdomer, cookieJar] = jsdomFromText({
-        url: `${baseUrl}/sgtmi`,
-        referrer: `${baseUrl}/sgtmi`,
-        contentType: "text/html",
-        runScripts: "outside-only",
-      })
-      const dom = jsdomer(htmltext);
-      initBrowser(dom.window, cookieJar);
-      new Script(jstext).runInContext(dom.getInternalVMContext());
-    }
+传入window对象，和需要拟真的浏览器类型，browser方法会自动将浏览器特性集成到window对象中。
 
-    loadPages()
-    ```
-2. 运行网站代码：[use-remote](https://github.com/pysunday/sdenv/example/use-remote/README.md)
-    ```javascript
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
-    const logger = require('../../utils/logger');
-    const browser = require('../../browser/');
-    const { jsdomFromUrl } = require('../../utils/jsdom');
+```javascript
+const { browser } = require('sdenv');
+...
+browser(window, 'chrome')
+```
 
-    const baseUrl = "https://wcjs.sbj.cnipa.gov.cn"
+浏览器类型及支持情况：
 
-    async function loadPagesSecond(cookieJar) {
-      const [jsdomer, ..._] = jsdomFromUrl({
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-      }, cookieJar);
-      const dom = await jsdomer(`${baseUrl}/sgtmi`);
-      if (dom.window.document.title === '商标网上检索') {
-        logger.info(`cookie验证通过，存在document.title，且值为：${dom.window.document.title}`);
-      } else {
-        logger.error('cookie验证不通过!');
-      }
-      dom.window.close();
-    }
+类型 | 是否支持
+---- | --------
+Chrome | Y
+Firefox | N
+Safari | N
 
-    async function loadPagesFirst() {
-      const [jsdomer, cookieJar] = jsdomFromUrl({
-        userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-      });
-      const dom = await jsdomer(`${baseUrl}/sgtmi`);
-      window = dom.window
-      window.onbeforeunload = async (url) => {
-        const cookies = cookieJar.getCookieStringSync(baseUrl);
-        logger.debug('生成cookie：', cookies);
-        await loadPagesSecond(cookieJar)
-        window.close();
-      }
-      browser(window, 'chrome');
-    }
+### jsdomFromText(config: object)
 
-    loadPagesFirst()
-    ```
+返回回调方法，用于纯文本方式调用jsdom，第一个参数为配置对象，最终会作为第二个参数传入到jsdom中。
+
+```javascript
+const { Script } = require("vm");
+const { jsdomFromText } = require('sdenv');
+const [jsdomer, cookieJar] = jsdomFromText({
+    url: 'https://host/path',
+    referrer: 'https://host/path',
+    contentType: "text/html",
+    runScripts: "outside-only", // 不会执行html文本中的js代码
+})
+const dom = jsdomer('<html>...</html>');
+new Script('javascript代码').runInContext(dom.getInternalVMContext()); // 执行javascript代码
+console.log('cookie值：', cookieJar.getCookieStringSync('https://host'));
+```
+
+进一步阅读：
+
+[jsdom的JSDOM API](https://github.com/jsdom/jsdom?tab=readme-ov-file#customizing-jsdom)
+
+### jsdomFromUrl(config?: object, cookieJar?: CookieJar)
+
+返回回调方法用于链接形式调用jsdom，第一个参数为配置对象，与jsdomFromText方法不同，该配置对象用于配置ResourceLoader，建议至少传入ua值，否则请求header中的ua内容会有jsdom标识，需要注意的是，该ua仅在jsdom层使用，cookieJar非必传，当需要延续cookie时需要传入。
+
+```javascript
+const { jsdomFromUrl } = require('sdenv');
+const config = { userAgent: 'native browser userAgent' };
+const [jsdomer, cookieJar] = jsdomFromUrl(config); // 返回自动生成的cookieJar
+const oneDom = await jsdomer('https://host/path');
+const twoDom = await jsdomFromUrl(config, cookieJar)[0]('https://host/path'); // 使用已经存在的cookieJar，因为要沿用上一次产生的cookie
+console.log('cookie值：', cookieJar.getCookieStringSync('https://host'));
+```
+
+进一步阅读：
+
+[jsdom的ResourceLoader API](https://github.com/jsdom/jsdom?tab=readme-ov-file#advanced-configuration)
+
+[jsdom的CookieJar API](https://github.com/jsdom/jsdom?tab=readme-ov-file#cookie-jars)
+
+[jsdom的fromURL API](https://github.com/jsdom/jsdom?tab=readme-ov-file#fromurl)
 
 ## sdenv-extend使用说明
 
 为了模拟浏览器执行环境，需要将node环境与浏览器环境共有代码进行提取，并提供返回环境对象用于sdenv内window与dom内容补充使用。
 
-sdenv-extend初始化只执行一次，初始化成功后生成的环境对象可以使用`Object.sdenv()`(vm中使用非node)获取。
-
 sdenv-extend具体功能可参考项目内[README文档](https://github.com/pysunday/sdenv-extend/blob/main/README.md)。
 
+## sdenv-jsdom使用说明
+
+sdenv-jsdom包是sdenv补环境框架能运行瑞数vmp网站并产生正确cookie的核心，该包仓库fork自jsdom仓库，并应对瑞数vmp对jsdom的检测做了代码修改，因此sdenv可以过网站对jsdom的检测!
 
 ## 声明
 
 该项目的开发基于瑞数vmp网站，不能保证在其它反爬虫产品稳定使用，出现问题请及时提issues或者提pull参与共建!
 
-由于初期版本只做了chrome浏览器的拟真，且项目文档不完善，作者会陆续补充，可以加入技术交流群与订阅号持续关注！
-
 添加作者微信进技术交流群：howduudu_tech(备注sdenv)
 
-订阅号会定期发表技术文章：码功
+订阅号不定时发表版本动态及技术文章：码功
+
+<img src="https://github.com/pysunday/sdenv/raw/main/static/qrcode.png" alt="订阅号：码功" width="320">

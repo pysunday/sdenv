@@ -5,6 +5,7 @@
   "directories": {
     "test": "test"
   },
+  "main": "index.js",
   "scripts": {
     "test": "jest ./test/",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand ./test/",
