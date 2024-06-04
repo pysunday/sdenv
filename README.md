@@ -45,14 +45,55 @@ const { jsdomFromText, jsdomFromUrl, browser } = require('sdenv');
 
 ### 样例代码运行
 
-clone项目仓库后执行依赖安装`npm i`，确保依赖安装成功后即可运行example目录下的样例文件了。
-
 注意：样例代码仅供参考，作者建议使用npm包方式使用sdenv框架!
+
+#### 源码方式
+
+clone项目仓库后执行依赖安装`npm i`，确保依赖安装成功后即可运行example目录下的样例文件了。
 
 1. 运行本地代码：[use-local](./example/use-local/README.md)
     ![样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-local.png)
 2. 运行网站代码：[use-remote](./example/use-remote/README.md)
     ![样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-remote.png)
+
+#### docker方式
+
+提供docker方式运行样例代码.
+
+首先执行`uname -a`后查看架构类型，支持`arm64`和`x86_64`
+
+如果是`arm64`架构则执行命令：
+
+1. 运行本地代码：`docker run --rm pysunday/sdenv:arm64 ./example/use-local/index.js`
+2. 运行网站代码：`docker run --rm pysunday/sdenv:arm64 ./example/use-remote/index.js`
+
+如果是`x86_64`架构则执行命令：
+
+1. 运行本地代码：`docker run --rm pysunday/sdenv:x86_64 ./example/use-local/index.js`
+2. 运行网站代码：`docker run --rm pysunday/sdenv:x86_64 ./example/use-remote/index.js`
+
+### docker打包
+
+可以参考项目的`Dockerfile.example`文件，通过命令`uname -a`查看架构类型，然后取消对应的`FROM`语句注释，修改文件名为`Dockerfile`，如arm64架构的Dockerfile文件内容：
+
+```docker
+FROM pysunday/sdenv_base:arm64
+
+RUN git clone https://github.com/pysunday/sdenv.git
+WORKDIR /sdenv
+RUN npm i
+
+ENTRYPOINT ["/usr/local/bin/node"]
+```
+
+最后执行命令`docker build -t pysunday/sdenv ./`生成容器
+
+运行容器内的样例代码与前面类似：
+
+1. 运行本地代码：`docker run --rm pysunday/sdenv ./example/use-local/index.js`
+2. 运行网站代码：`docker run --rm pysunday/sdenv ./example/use-remote/index.js`
+
+**如果需要在docker内调试代码，作者建议使用npm包的方式使用sdenv，然后通过映射方式调用docker**
 
 ## API
 

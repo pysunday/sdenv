@@ -1,6 +1,6 @@
 {
   "name": "sdenv",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "补环境框架",
   "directories": {
     "test": "test"
@@ -20,7 +20,7 @@
   "homepage": "https://github.com/pysunday/sdenv#readme",
   "bugs": "https://github.com/pysunday/sdenv/issues",
   "author": "pysunday",
-  "license": "ISC",
+  "license": "BSD 3-Clause",
   "dependencies": {
     "bindings": "^1.5.0",
     "canvas": "^2.11.2",
