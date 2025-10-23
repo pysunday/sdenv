@@ -56,28 +56,34 @@ clone项目仓库后执行依赖安装`npm i`，确保依赖安装成功后即�
 2. 运行网站代码：[use-remote](./example/use-remote/README.md)
     ![样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-remote.png)
 
-#### docker方式
-
-提供docker方式运行样例代码.
+#### docker运行容器内的样例文件
 
 首先执行`uname -a`后查看架构类型，支持`arm64`和`x86_64`
 
 如果是`arm64`架构则执行命令：
 
-1. 运行本地代码：`docker run --rm pysunday/sdenv:arm64 ./example/use-local/index.js`
-2. 运行网站代码：`docker run --rm pysunday/sdenv:arm64 ./example/use-remote/index.js`
+1. 运行本地代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:0.3.0 ./example/use-local/index.js`
+2. 运行网站代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:0.3.0 ./example/use-remote/index.js`
 
 如果是`x86_64`架构则执行命令：
 
-1. 运行本地代码：`docker run --rm pysunday/sdenv:x86_64 ./example/use-local/index.js`
-2. 运行网站代码：`docker run --rm pysunday/sdenv:x86_64 ./example/use-remote/index.js`
+1. 运行本地代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-x86_64:0.3.0 ./example/use-local/index.js`
+2. 运行网站代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-x86_64:0.3.0 ./example/use-remote/index.js`
+
+#### docker运行宿主机本地文件
+
+以本地文件`./example/use-remote/index.js`示例，`uname -a`的结果为`arm64`，利用docker的-v参数映射本地文件再执行该文件，如：
+
+```bash
+docker run --rm -v $(pwd)/example/use-docker:/app crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:0.3.0 /app/index.js
+```
 
 ### docker打包
 
 可以参考项目的`Dockerfile.example`文件，通过命令`uname -a`查看架构类型，然后取消对应的`FROM`语句注释，修改文件名为`Dockerfile`，如arm64架构的Dockerfile文件内容：
 
 ```docker
-FROM pysunday/sdenv_base:arm64
+FROM crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv_base:arm64
 
 RUN git clone https://github.com/pysunday/sdenv.git
 WORKDIR /sdenv
