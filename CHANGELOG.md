@@ -1,5 +1,21 @@
 
 
+## [0.3.0](https://github.com/pysunday/sdenv/compare/0.2.0...0.3.0) (2025-10-23)
+
+
+### Features
+
+* 在docker中使用 [#4](https://github.com/pysunday/sdenv/issues/4) ([b87cab8](https://github.com/pysunday/sdenv/commit/b87cab8a2106c612878d764d8eac1d79a8560941))
+* 增加环境测试脚本 ([6e9e898](https://github.com/pysunday/sdenv/commit/6e9e8989079ddd47542cc89c8166e78814a4d455))
+* 适配网站epub.cnipa.gov.cn ([40d8d4b](https://github.com/pysunday/sdenv/commit/40d8d4be6eb608a1572841c9c9330746fbf00719))
+
+
+### Bug Fixes
+
+* readme同步样例代码 ([8ea1d8b](https://github.com/pysunday/sdenv/commit/8ea1d8b3eeb04fec5bc9e316f5790830474ebd28))
+* use-remote打印优化 ([7662778](https://github.com/pysunday/sdenv/commit/766277871b2660c5eae1812354f48aa85db4abad))
+* 文档更新、logger打印时间去除、增加全局导出 ([da840d4](https://github.com/pysunday/sdenv/commit/da840d4245e3f04fd344b2a9bdddffc4c675743e))
+
 ## [0.2.0](https://github.com/pysunday/sdenv/compare/0.1.1...0.2.0) (2024-04-15)
 
 
