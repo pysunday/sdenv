@@ -1,4 +1,5 @@
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+// process.env.OPENSSL_LEGACY_RENEGOTIATION = '1';
 const logger = require('../../utils/logger');
 const { jsdomFromUrl, browser } = require('../../');
 
@@ -13,10 +14,16 @@ const config = {
 async function loadPagesSecond(cookieJar) {
   const [jsdomer, ..._] = jsdomFromUrl(config, cookieJar);
   const dom = await jsdomer(`${baseUrl}`);
-  if (dom.window.document.title) {
-    logger.info(`cookie验证通过，存在document.title，且值为：${dom.window.document.title}`);
+  const title = dom.window.document.title || dom.window.document.querySelector('meta[name="keywords"]')?.content;
+  if (title) {
+    logger.info(`cookie验证通过，网站名称或者描述为：${title}`);
   } else {
-    logger.error('cookie验证不通过!');
+    try {
+      logger.info(`body文本：${[...dom.window.document.getElementsByTagName('body')].pop().textContent.replace(/\s+/g, ' ')}`);
+      logger.error('未找到网页标题或描述，请自行核对body文本验证！');
+    } catch(err) {
+      logger.error('cookie验证不通过！')
+    }
   }
   process.exit();
   // dom.window.close();

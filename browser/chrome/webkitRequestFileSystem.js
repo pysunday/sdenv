@@ -6,6 +6,6 @@ module.exports = (sdenv) => {
       window.setTimeout(successCallback, 0);
     }
   };
-  sdenv.tools.setNativeFuncName(webkitRequestFileSystem, 'webkitRequestFileSystem')
+  sdenv.tools.setFuncNative(webkitRequestFileSystem, 'webkitRequestFileSystem', 3);
   window.webkitRequestFileSystem = webkitRequestFileSystem;
 }

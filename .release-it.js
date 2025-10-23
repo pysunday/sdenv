@@ -6,7 +6,7 @@ module.exports = {
     commitMessage: "release: v${version}"
   },
   npm: {
-    publish: false
+    publish: true
   },
   hooks: {
     "after:bump": "echo 更新版本成功"
