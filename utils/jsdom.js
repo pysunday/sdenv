@@ -1,50 +1,55 @@
 const jsdom = require('sdenv-jsdom');
 const logger = require('./logger');
 const { JSDOM, CookieJar } = jsdom;
+const browser = require('../browser/');
 
-exports.jsdomFromUrl = (cfg, cookieJar) => {
-  const { consoleConfig = {}, ...config } = cfg;
+function getVirtualConsole(consoleConfig) {
+  const virtualConsole = new jsdom.VirtualConsole();
+  virtualConsole.on("log", consoleConfig.log || logger.log.bind(logger));
+  virtualConsole.on("warn", consoleConfig.warn || logger.warn.bind(logger));
+  virtualConsole.on("error", consoleConfig.error || logger.error.bind(logger));
+  virtualConsole.on("info", consoleConfig.info || logger.info.bind(logger));
+  virtualConsole.on("jsdomError", consoleConfig.error || logger.error.bind(logger));
+  return virtualConsole;
+}
+
+exports.jsdomFromUrl = async (url, {
+  consoleConfig = {},
+  cookieJar = new CookieJar(),
+  browserType = 'chrome',
+  ...config
+} = {}) => {
+  if (!browser.isSupport(browserType)) throw new Error(`浏览器类型（${browserType}）不正确或未适配！`)
   const resourceLoader = new jsdom.ResourceLoader({
     strictSSL: false,
     ...config,
   });
-  const virtualConsole = new jsdom.VirtualConsole();
-  virtualConsole.sendTo({
-    log: logger.log.bind(logger),
-    warn: logger.warn.bind(logger),
-    error: logger.error.bind(logger),
-    ...consoleConfig,
-  });
-  if (!cookieJar) cookieJar = new CookieJar();
   const options = {
     pretendToBeVisual: true,
     runScripts: "dangerously",
     resources: resourceLoader,
     cookieJar,
-    virtualConsole,
+    virtualConsole: getVirtualConsole(consoleConfig),
   }
-  return [(url) => {
-    return JSDOM.fromURL(url, options);
-  }, cookieJar];
+  const dom = await JSDOM.fromURL(url, options);
+  dom.sdenv = browser(dom.window, browserType);
+  return dom;
 };
 
-exports.jsdomFromText = (cfg) => {
-  const { consoleConfig = {}, ...config } = cfg;
-  const virtualConsole = new jsdom.VirtualConsole();
-  virtualConsole.sendTo({
-    log: logger.log.bind(logger),
-    warn: logger.warn.bind(logger),
-    error: logger.error.bind(logger),
-    ...consoleConfig,
-  });
-  const cookieJar = new CookieJar()
+exports.jsdomFromText = (html, {
+  consoleConfig = {},
+  cookieJar = new CookieJar(),
+  browserType = 'chrome',
+  ...config
+} = {}) => {
+  if (!browser.isSupport(browserType)) throw new Error(`浏览器类型（${browserType}）不正确或未适配！`)
   const options = {
     pretendToBeVisual: true,
     cookieJar,
-    virtualConsole,
+    virtualConsole: getVirtualConsole(consoleConfig),
     ...config,
   }
-  return [(text) => {
-    return new JSDOM(text, options);
-  }, cookieJar];
+  const dom = new JSDOM(html, options);
+  dom.sdenv = browser(dom.window, browserType);
+  return dom;
 }

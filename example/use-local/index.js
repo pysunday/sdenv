@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { Script } = require("vm");
 const logger = require('../../utils/logger');
-const { jsdomFromText, browser } = require('../../');
+const { jsdomFromText } = require('../../');
 
 const baseUrl = "https://wcjs.sbj.cnipa.gov.cn"
 
@@ -21,25 +21,23 @@ function getFile(name) {
 
 function initBrowser(window, cookieJar) {
   window.$_ts = JSON.parse(getFile('ts'));
-  window.onbeforeunload = async (url) => {
+  window.addEventListener('sdenv:location.replace', (e) => {
     const cookies = cookieJar.getCookieStringSync(baseUrl);
     logger.debug('生成cookie：', cookies);
     window.close();
-  }
-  browser(window, 'chrome');
+  })
 }
 
 async function loadPages() {
   const htmltext = getFile('html');
   const jstext = getFile('js');
-  const [jsdomer, cookieJar] = jsdomFromText({
+  const dom = jsdomFromText(htmltext, {
     url: `${baseUrl}/sgtmi`,
     referrer: `${baseUrl}/sgtmi`,
     contentType: "text/html",
     runScripts: "outside-only",
   })
-  const dom = jsdomer(htmltext);
-  initBrowser(dom.window, cookieJar);
+  initBrowser(dom.window, dom.cookieJar);
   new Script(jstext).runInContext(dom.getInternalVMContext());
 }
 

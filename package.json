@@ -1,6 +1,6 @@
 {
   "name": "sdenv",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "补环境框架",
   "directories": {
     "test": "test"
@@ -21,30 +21,28 @@
   "bugs": "https://github.com/pysunday/sdenv/issues",
   "author": "pysunday",
   "license": "BSD 3-Clause",
+  "bin": {
+    "sdenv": "./example/use-docker/index.js"
+  },
   "dependencies": {
     "bindings": "^1.5.0",
-    "canvas": "^2.11.2",
+    "canvas": "^3.2.0",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
     "log4js": "^6.9.1",
     "module-alias": "^2.2.3",
     "node-addon-api": "^7.0.0",
-    "sdenv-extend": "^1.3.0",
-    "sdenv-jsdom": "^1.1.0"
+    "sdenv-extend": "^1.7.0",
+    "sdenv-jsdom": "^2.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
     "@release-it/conventional-changelog": "^8.0.1",
+    "babel-jest": "^30.2.0",
     "release-it": "^17.0.1"
   },
   "gypfile": true,
-  "jest": {
-    "moduleNameMapper": {
-      "@/(.*)": "<rootDir>/$1",
-      "@utils/(.*)": "<rootDir>/utils/$1",
-      "@handler/(.*)": "<rootDir>/handler/$1",
-      "@bin/(.*)": "<rootDir>/bin/$1"
-    }
-  },
   "engines": {
     "node": ">=20.10.0"
   },

@@ -8,7 +8,7 @@ log4js.configure({
       type: 'stdout',
       layout: {
         type: 'pattern',
-        pattern: '%[%p %c -%] %m'
+        pattern: '%d{hh:mm:ss} %[%p %c -%] %m'
       }
     }
   },
