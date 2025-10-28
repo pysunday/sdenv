@@ -7,6 +7,7 @@ const { jsdomFromText } = require('../../');
 const baseUrl = "https://wcjs.sbj.cnipa.gov.cn"
 
 const files = {
+  // 此处的文件可以通过运行npx rs-reverse makecode tarurl自动生成
   html: path.resolve(__dirname, 'output/makecode_input_html.html'),
   js: path.resolve(__dirname, 'output/makecode_input_js.js'),
   ts: path.resolve(__dirname, 'output/makecode_input_ts.json'),

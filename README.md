@@ -14,7 +14,7 @@ sdenv是一个javascript运行时补环境框架，与github上其它补环境�
 
 ## 依赖
 
-作者开发时使用的是`v20.10.0`版本node，预期最低要求是18版本，由于未做其它版本可用性测试，因此建议使用sdenv的node版本大于等于`v20.10.0`。
+作者开发时使用的是`v20.19.5`版本Node，由于jsdom27版本需要Node支持ESM，但是v20仅部分支持ESM，因此如果您也使用v20版本，请使用最新的，如当前最新为`v20.19.5`
 
 编译node插件用的是[node-gyp](https://github.com/nodejs/node-gyp)工具，该工具需要有python环境和c环境(如windows系统需安装Visual Studio，Mac系统需要安装XCode)，请根据[工具文档](https://github.com/nodejs/node-gyp)进行系统环境搭建。
 
@@ -26,9 +26,11 @@ sdenv是一个javascript运行时补环境框架，与github上其它补环境�
 
 1. npm安装node-gyp报错：请确保操作系统有c++编译环境与python环境，报错示例（感谢用户风流小混沌提供图片素材）:
 ![npm安装报错](https://github.com/pysunday/sdenv/blob/main/static/install-error.jpeg)
-2. 安装缓慢及canvas报错：由于canvas安装会优先从github获取现成的包，因此请在安装前先设置代理或者其它国内源，如果安装仍然失败请使用npm官方源+代理方式重新尝试；
+2. 安装缓慢及canvas报错(**基本都是网络问题**)：由于canvas安装会优先从github获取现成的包，因此请在安装前先设置代理或者其它国内源，如果安装仍然失败请使用npm官方源+代理方式重新尝试；
 
-**解决完报错后记得重新执行下依赖安装！**
+注意：canvas安装失败不会中断安装，但是在运行时，如果网页代码中有调用canvas相关API会报错，如有使用canvas相关api请务必确认安装成功！
+
+**解决完报错后记得重新执行下依赖安装！如不确定是否本地问题，可以先以docker方式（参见[docker运行use-docker样例](#docker运行use-docker样例)）运行和验证！**
 
 有其它问题请提issues！
 
@@ -51,10 +53,10 @@ const { jsdomFromText, jsdomFromUrl, browser } = require('sdenv');
 
 clone项目仓库后执行依赖安装`npm i`，确保依赖安装成功后即可运行example目录下的样例文件了。
 
-1. 运行本地代码：[use-local](./example/use-local/README.md)
-    ![样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-local.png)
-2. 运行网站代码：[use-remote](./example/use-remote/README.md)
-    ![样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-remote.png)
+1. 运行本地代码：
+    ![use-local样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-local.png)
+2. 运行网站代码：
+    ![use-remote样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-remote.png)
 
 #### docker运行容器内的样例文件
 
@@ -62,21 +64,35 @@ clone项目仓库后执行依赖安装`npm i`，确保依赖安装成功后即�
 
 如果是`arm64`架构则执行命令：
 
-1. 运行本地代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:0.3.0 ./example/use-local/index.js`
-2. 运行网站代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:0.3.0 ./example/use-remote/index.js`
+1. 运行本地代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:1.0.0 ./example/use-local/index.js`
+2. 运行网站代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:1.0.0 ./example/use-remote/index.js`
 
 如果是`x86_64`架构则执行命令：
 
-1. 运行本地代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-x86_64:0.3.0 ./example/use-local/index.js`
-2. 运行网站代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-x86_64:0.3.0 ./example/use-remote/index.js`
+1. 运行本地代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-x86_64:1.0.0 ./example/use-local/index.js`
+2. 运行网站代码：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-x86_64:1.0.0 ./example/use-remote/index.js`
+
+![use-local样例调用](https://github.com/pysunday/sdenv/blob/main/static/docker-example-use-local.png)
+
+![use-remote样例调用](https://github.com/pysunday/sdenv/blob/main/static/docker-example-use-remote.png)
+
+##### docker运行use-docker样例
+
+v1.0.0版本增加use-docker样例，该样例提供全局使用sdenv制作命令行命令的演示，如您使用python调用sdenv，可通过全局安装sdenv（`npm i -g sdenv`）后编写请求代码并打印后返回给python使用。
+
+同时该样例通过外部传参的方式动态调用sdenv模拟浏览器打开目标网站，因此可直接使用该样例测试目标网站在sdenv中是否可用，调用方式：`docker run --rm crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:1.0.0 ./example/use-docker/index.js 目标网站地址`，运行如下：
+
+![use-docker样例调用](https://github.com/pysunday/sdenv/blob/main/static/docker-example-use-docker.png)
 
 #### docker运行宿主机本地文件
 
-以本地文件`./example/use-remote/index.js`示例，`uname -a`的结果为`arm64`，利用docker的-v参数映射本地文件再执行该文件，如：
+以本地文件`./example/use-docker/index.js`示例，`uname -a`的结果为`arm64`，利用docker的-v参数映射本地文件再执行该文件，如：
 
 ```bash
-docker run --rm -v $(pwd)/example/use-docker:/app crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:0.3.0 /app/index.js
+docker run --rm -v $(pwd)/example/use-docker:/app crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-arm64:1.0.0 /app/index.js 目标网站地址
 ```
+
+![use-docker样例调用](https://github.com/pysunday/sdenv/blob/main/static/example-use-docker.png)
 
 ### docker打包
 
@@ -85,8 +101,11 @@ docker run --rm -v $(pwd)/example/use-docker:/app crpi-vkjftqt0qsdk2jmc.cn-shang
 ```docker
 FROM crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv_base:arm64
 
-RUN git clone https://github.com/pysunday/sdenv.git
-WORKDIR /sdenv
+UN npm i
+ENV NODE_PATH=/usr/local/lib/node_modules
+RUN n 20 && npm install -g npm@latest node-gyp@latest
+RUN git clone --branch main --depth 1 https://github.com/pysunday/sdenv.git
+WORKDIR sdenv
 RUN npm i
 
 ENTRYPOINT ["/usr/local/bin/node"]
@@ -103,7 +122,7 @@ ENTRYPOINT ["/usr/local/bin/node"]
 
 ## API
 
-sdenv设计极其简单，它的核心API只有一个，即browser！
+sdenv设计极其简单，它的核心API只有一个，即browser（sdenv补的环境通过browser方法注入）！
 
 ### browser(window: object, type: string)
 
@@ -123,40 +142,42 @@ Chrome | Y
 Firefox | N
 Safari | N
 
-### jsdomFromText(config: object)
+### jsdomFromText(htmlText: string, config: object)
 
-返回回调方法，用于纯文本方式调用jsdom，第一个参数为配置对象，最终会作为第二个参数传入到jsdom中。
+除返回与jsdom保持一致外，同时返回sdenv属性，如常用的属性值有：`const { window, cookieJar, sdenv, ... } = jsdomFromText(...)`
 
 ```javascript
 const { Script } = require("vm");
 const { jsdomFromText } = require('sdenv');
-const [jsdomer, cookieJar] = jsdomFromText({
+const dom = jsdomFromText('<html>...</html>', {
     url: 'https://host/path',
     referrer: 'https://host/path',
     contentType: "text/html",
     runScripts: "outside-only", // 不会执行html文本中的js代码
 })
-const dom = jsdomer('<html>...</html>');
 new Script('javascript代码').runInContext(dom.getInternalVMContext()); // 执行javascript代码
-console.log('cookie值：', cookieJar.getCookieStringSync('https://host'));
+console.log('cookie值：', dom.cookieJar.getCookieStringSync('https://host'));
 ```
+
+**注：代码仅演示，具体使用请移步[use-local样例](./example/use-local/index.js)**
 
 进一步阅读：
 
 [jsdom的JSDOM API](https://github.com/jsdom/jsdom?tab=readme-ov-file#customizing-jsdom)
 
-### jsdomFromUrl(config?: object, cookieJar?: CookieJar)
+### jsdomFromUrl(url: string, config?: object)
 
-返回回调方法用于链接形式调用jsdom，第一个参数为配置对象，与jsdomFromText方法不同，该配置对象用于配置ResourceLoader，建议至少传入ua值，否则请求header中的ua内容会有jsdom标识，需要注意的是，该ua仅在jsdom层使用，cookieJar非必传，当需要延续cookie时需要传入。
+除返回与jsdom保持一致外，同时返回sdenv属性，如常用的属性值有：`const { window, cookieJar, sdenv, ... } = jsdomFromUrl(...)`
 
 ```javascript
 const { jsdomFromUrl } = require('sdenv');
 const config = { userAgent: 'native browser userAgent' };
-const [jsdomer, cookieJar] = jsdomFromUrl(config); // 返回自动生成的cookieJar
-const oneDom = await jsdomer('https://host/path');
-const twoDom = await jsdomFromUrl(config, cookieJar)[0]('https://host/path'); // 使用已经存在的cookieJar，因为要沿用上一次产生的cookie
-console.log('cookie值：', cookieJar.getCookieStringSync('https://host'));
+const oneDom = await jsdomFromUrl('https://host/path', config); // 返回自动生成的cookieJar
+const twoDom = await jsdomFromUrl('https://host/path', { ...config, cookieJar: oneDom.cookieJar }); // 使用已经存在的cookieJar，因为要沿用上一次产生的cookie
+console.log('cookie值：', twoDom.cookieJar.getCookieStringSync('https://host'));
 ```
+
+**注：代码仅演示，具体使用请移步[use-remote样例](./example/use-remote/index.js)**
 
 进一步阅读：
 
