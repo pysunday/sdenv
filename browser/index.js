@@ -10,3 +10,7 @@ module.exports = (win, type = 'chrome') => {
   require(`@/browser/${type}`)(win.sdenv);
   return win.sdenv;
 }
+
+module.exports.supports = ['chrome'];
+
+module.exports.isSupport = (type) => module.exports.supports.includes(type);

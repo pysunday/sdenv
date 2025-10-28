@@ -19,7 +19,6 @@ module.exports = (sdenv) => {
   setFuncNative(window.cancelIdleCallback = function cancelIdleCallback(handle) {});
   setFuncNative(window.createImageBitmap = function createImageBitmap(image) {}, 1);
   setFuncNative(window.find = function find() {});
-  setFuncNative(window.matchMedia = function matchMedia(mediaQueryString) {});
   setFuncNative(window.moveBy = function moveBy(deltaX, deltaY) {});
   setFuncNative(window.moveTo = function moveTo(x, y) {});
   setFuncNative(window.postMessage, 'postMessage', 1);

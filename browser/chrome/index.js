@@ -13,4 +13,5 @@ module.exports = (sdenv) => {
   require('./RTCPeerConnection')(sdenv);
   require('./document-element')(sdenv);
   require('./CanvasRenderingContext2D')(sdenv);
+  require('./matchMedia')(sdenv);
 }
