@@ -1,5 +1,12 @@
 
 
+## [1.0.2](https://github.com/pysunday/sdenv/compare/v1.0.0...v1.0.2) (2025-10-30)
+
+
+### Bug Fixes
+
+* 1. example样例use-docker优化; 2. docker调用方式优化; 3. 免责声明与文档调整 ([a984e0c](https://github.com/pysunday/sdenv/commit/a984e0ca8abcc8d17be18b6569f0d14413cf5c6a))
+
 ## [1.0.1](https://github.com/pysunday/sdenv/compare/v1.0.0...v1.0.1) (2025-10-28)
 
 ## [0.3.0](https://github.com/pysunday/sdenv/compare/0.2.0...0.3.0) (2025-10-23)
