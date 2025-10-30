@@ -2,9 +2,7 @@
 # FROM crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv_base:x86_64
 
 ENV NODE_PATH=/usr/local/lib/node_modules
-RUN n 20 && npm install -g npm@latest node-gyp@latest
-RUN git clone --branch main --depth 1 https://github.com/pysunday/sdenv.git
-WORKDIR sdenv
-RUN npm i
+RUN n 20 && npm install -g npm@latest node-gyp@latest sdenv@latest
+COPY example example
 
 ENTRYPOINT ["/usr/local/bin/node"]

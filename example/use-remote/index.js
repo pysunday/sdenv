@@ -1,7 +1,8 @@
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 // process.env.OPENSSL_LEGACY_RENEGOTIATION = '1';
-const logger = require('../../utils/logger');
-const { jsdomFromUrl } = require('../../');
+try{require('module-alias')()}catch(err){};
+const logger = require('sdenv/utils/logger');
+const { jsdomFromUrl } = require('sdenv');
 const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36';
 
 const tarUrl = "https://zhaopin.sgcc.com.cn/sgcchr/static/dynaAument.html"

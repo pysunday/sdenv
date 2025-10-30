@@ -1,8 +1,9 @@
+try{require('module-alias')()}catch(err){};
 const fs = require('fs');
 const path = require('path');
 const { Script } = require("vm");
-const logger = require('../../utils/logger');
-const { jsdomFromText } = require('../../');
+const logger = require('sdenv/utils/logger');
+const { jsdomFromText } = require('sdenv');
 
 const baseUrl = "https://wcjs.sbj.cnipa.gov.cn"
 
