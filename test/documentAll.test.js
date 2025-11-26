@@ -5,6 +5,7 @@ describe('模拟document.all检测', () => {
   console.log(
     '运行：getDocumentAll({ length: 1 })，返回：', da,
     '\n运行：getDocumentAll({ length: 1 }) == undefined，返回：', da == undefined,
+    '\n运行：getDocumentAll({ length: 1 }) === undefined，返回：', da === undefined,
     '\n运行：getDocumentAll({ length: 1 })()，返回：', da(),
     '\n运行：typeof getDocumentAll({ length: 1 })，返回：', typeof da,
   );
@@ -13,6 +14,9 @@ describe('模拟document.all检测', () => {
   });
   test('getDocumentAll({ length: 1 }) == undefined', () => {
     expect(da == undefined).toBe(true);
+  });
+  test('getDocumentAll({ length: 1 }) === undefined', () => {
+    expect(da === undefined).toBe(false);
   });
   test('typeof getDocumentAll({ length: 1 })', () => {
     expect(typeof da).toBe('undefined');
